@@ -9,7 +9,7 @@ main :: IO ()
 main = do
   mnist <- B.readFile "mnist"
   let imagesMatrix = B.take 47040000 (B.drop 16 mnist)
-  newLines (P.take 784 (P.drop 784 (readInts imagesMatrix)))
+  -- newLines (P.take 784 (P.drop 784 (readInts imagesMatrix)))
 
 newLines :: [Integer] -> IO ()
 newLines numbers = do
