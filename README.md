@@ -1,0 +1,1 @@
+This project aims to implement an image classifier in Haskell from scratch.
