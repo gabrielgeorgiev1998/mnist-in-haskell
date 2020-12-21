@@ -1,30 +1,25 @@
-{-# LANGUAGE OverloadedStrings #-}
+module Main where
 
-import Data.ByteString as B -- hiding (drop, putStrLn, readFile, unpack, head)
-import Data.ByteString.Char8 as C8 -- hiding (drop, take, head)
-import Data.Maybe
-import Prelude as P -- hiding (drop, length, map, null, readFile, tail, take)
+  import Dataloader
+  import Data.String
 
-main :: IO ()
-main = do
-  mnist <- B.readFile "mnist"
-  let imagesMatrix = B.take 47040000 (B.drop 16 mnist)
-  -- newLines (P.take 784 (P.drop 784 (readInts imagesMatrix)))
+  main :: IO ()
+  main = do
+    images <- loadXTrain 10
+    showImage (head (drop 3 images))
 
-newLines :: [Integer] -> IO ()
-newLines numbers = do
-  if P.null numbers
-    then print("\n")
-    else newLinesHelper numbers
+  showImage :: [Int] -> IO ()
+  showImage list = do
+    putStrLn (concatMap toAsciiPixel (take 28 list))
+    if null (drop 28 list)
+      then putStr ""
+      else showImage (drop 28 list)
 
-newLinesHelper :: [Integer] -> IO()
-newLinesHelper numbers = do
-  print (P.take 28 numbers)
-  newLines (P.drop 28 numbers)
-
-readInts :: ByteString -> [Integer]
-readInts str
-  | B.null str = []
-  | otherwise =
-    fst (fromMaybe (0, B.drop 1 str) (readInteger str)) :
-    readInts (snd (fromMaybe (0, B.drop 1 str) (readInteger str)))
+  toAsciiPixel:: Int -> String
+  toAsciiPixel pixelNum
+    | pixelNum == 0     = toEnum 46:" "
+    | pixelNum < 30     = toEnum 95:" "
+    | pixelNum < 100    = toEnum 45:" "
+    | pixelNum < 200    = toEnum 61:" "
+    | pixelNum < 230    = toEnum 65:" "
+    | otherwise         = toEnum 77:" "

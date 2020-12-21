@@ -1,9 +1,6 @@
-{-# LANGUAGE OverloadedStrings #-}
-
-
 module Dataloader where
 
-  import Data.Text hiding (map, take, lines)
+  -- import Data.Text hiding (map, take, lines)
 
   xTrainFile :: Int -> IO [String]
   xTrainFile count = do
@@ -13,4 +10,5 @@ module Dataloader where
   loadXTrain :: Int -> IO [[Int]]
   loadXTrain count = do
     lines <- xTrainFile count
-    return (map (read . splitOn " ") lines)
+    let charNums = map words lines
+    return (map (map read) charNums)
